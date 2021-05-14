@@ -1,6 +1,9 @@
 enum QuestionType {
-  Gif = 'GIF',
+  Image = 'Image or GIF',
   Text = 'Text'
 }
 
-export default QuestionType;
+type QuestionTypeKey = keyof typeof QuestionType;
+
+export { QuestionType };
+export type { QuestionTypeKey };

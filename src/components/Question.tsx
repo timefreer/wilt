@@ -9,9 +9,9 @@ function Question(props: { question: QuestionSchema }) {
             role="contentinfo"
             aria-label="Question">
             <header>
-                <h1>
+                <h2>
                     { question.text }
-                </h1>
+                </h2>
             </header>
             <p>
                 { question.answer || "You haven't answered this one yet" }

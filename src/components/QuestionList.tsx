@@ -8,9 +8,10 @@ function QuestionList(props: { questions: QuestionSchema[] }) {
   });
 
   return (
-    <article id="questions-to-answer-today"
-      role="contentinfo"
-      aria-label="Questions to answer today">
+    <article>
+      <h1>
+        Questions For Today
+      </h1>
       { questions }
     </article>
   );

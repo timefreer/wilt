@@ -1,9 +1,9 @@
-import QuestionType from './Question-type.enum';
+import { QuestionType } from './Question-type.enum';
 
 interface QuestionSchema {
-  date: string; // yyyy-mm-dd
-  type: QuestionType;
   text: string;
+  type: QuestionType;
+  date?: string; // yyyy-mm-dd
   answer?: string;
 }
 
