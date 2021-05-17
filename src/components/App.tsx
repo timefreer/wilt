@@ -15,7 +15,8 @@ const QUESTIONS: QuestionSchema[] = [
   }, {
     date: '2021-05-05',
     type: QuestionType.Image,
-    text: 'What is the best GIF?'
+    text: 'What is the best GIF?',
+    answer: 'https://media.giphy.com/media/13ByqbM0hgfN7y/giphy.gif'
   }
 ];
 
