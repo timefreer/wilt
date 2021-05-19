@@ -19,12 +19,32 @@ class App extends React.Component<{}, AppState> {
     };
 
     this.addQuestion = this.addQuestion.bind(this);
+    this.openAnswerForQuestion = this.openAnswerForQuestion.bind(this);
+    this.answerQuestion = this.answerQuestion.bind(this);
   }
 
   addQuestion(newQuestion: QuestionSchema): void {
     this.setState((state, props) => ({
       questions: [...state.questions, newQuestion]
     }));
+  }
+
+  openAnswerForQuestion(questionToAnswer: QuestionSchema): void {
+    this.setState((state, props) => {
+      state.questions.forEach(question => question.isAnswering = question.text === questionToAnswer.text);
+      return { questions: [...state.questions] };
+    });
+  }
+
+  answerQuestion(updatedQuestion: QuestionSchema): void {
+    this.setState((state, props) => {
+      let questionIndexToUpdate = state.questions.findIndex(question => question.text === updatedQuestion.text);
+      if (questionIndexToUpdate >= 0) {
+        state.questions[questionIndexToUpdate] = updatedQuestion;
+        state.questions[questionIndexToUpdate].isAnswering = false;
+        return { questions: [...state.questions] };
+      }
+    });
   }
 
   render() {
@@ -41,7 +61,10 @@ class App extends React.Component<{}, AppState> {
             </Route>
 
             <Route exact path="/">
-              <QuestionList questions={this.state.questions} />
+              <QuestionList
+                questions={this.state.questions}
+                onClick={this.openAnswerForQuestion}
+                onAnswer={this.answerQuestion} />
 
               <Link to="/settings">
                 <button className="wilt__settings">
