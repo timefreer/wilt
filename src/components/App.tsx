@@ -1,25 +1,11 @@
 import './App.scss';
 import QuestionList from './QuestionList';
 import QuestionSchema from '../models/Question.schema';
-import { QuestionType } from '../models/Question-type.enum';
 import Settings from './Settings';
 import React from 'react';
 import AddQuestion from './AddQuestion';
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
-
-const QUESTIONS: QuestionSchema[] = [
-  {
-    date: '2021-05-05',
-    type: QuestionType.Text,
-    text: 'What is the funniest thing today?',
-    answer: 'Lorem ipsum udle seedle is foa tuta'
-  }, {
-    date: '2021-05-05',
-    type: QuestionType.Image,
-    text: 'What is the best GIF?',
-    answer: 'https://media.giphy.com/media/13ByqbM0hgfN7y/giphy.gif'
-  }
-];
+import defaultQuestions from '../data/default-questions';
 
 interface AppState {
   questions: QuestionSchema[];
@@ -29,7 +15,7 @@ class App extends React.Component<{}, AppState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      questions: QUESTIONS
+      questions: defaultQuestions
     };
 
     this.addQuestion = this.addQuestion.bind(this);
