@@ -11,13 +11,13 @@
     overflow: scroll;
 
     &__settings {
-        position: absolute;
+        position: fixed;
         bottom: 1.25rem;
         left: 1.25rem;
     }
 
     &__add-question {
-        position: absolute;
+        position: fixed;
         bottom: 1.25rem;
         right: 1.25rem;
     }
