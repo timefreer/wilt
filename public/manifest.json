@@ -29,7 +29,7 @@
   "manifestUrl": "https://inspiring-gates-85018b.netlify.app/manifest.json",
   "lang": "en-US",
   "share_target": {
-    "action": "/?share-target=1",
+    "action": "/",
     "method": "GET",
     "params": {
       "title": "title",

@@ -10,18 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
   console.log('Title shared: ' + parsedUrl.searchParams.get('title'));
   console.log('Text shared: ' + parsedUrl.searchParams.get('text'));
   console.log('URL shared: ' + parsedUrl.searchParams.get('url'));
-});
-
-window.addEventListener('beforeinstallprompt', (e: any) => {
-  // Prevent the mini-infobar from appearing on mobile
-  e.preventDefault();
-  // Optionally, send analytics event that PWA install promo was shown.
-  console.log(`'beforeinstallprompt' event was fired.`);
-});
-
-window.addEventListener('appinstalled', () => {
-  // Optionally, send analytics event to indicate successful install
-  console.log('PWA was installed');
+  console.log(parsedUrl.searchParams.toString())
 });
 
 ReactDOM.render(
