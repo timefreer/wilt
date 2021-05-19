@@ -6,11 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import App from './components/App';
 
 window.addEventListener('DOMContentLoaded', () => {
-  const parsedUrl = new URL(window.location as unknown as string);
-  console.log('Title shared: ' + parsedUrl.searchParams.get('title'));
-  console.log('Text shared: ' + parsedUrl.searchParams.get('text'));
-  console.log('URL shared: ' + parsedUrl.searchParams.get('url'));
-  console.log(parsedUrl.searchParams.toString())
+  const parsedUrl = new URL(window.location.href);
+  const title = parsedUrl.searchParams.get('title');
+  const text = parsedUrl.searchParams.get('text');
+  console.log(`title:\t${title}`);
+  console.log(`text:\t${text}`);
 });
 
 ReactDOM.render(
