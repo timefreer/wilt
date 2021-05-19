@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { QuestionType, QuestionTypeKey } from '../models/Question-type.enum';
 import QuestionSchema from '../models/Question.schema';
 import './AddQuestion.scss';
@@ -10,6 +11,7 @@ interface AddQuestionProps {
 interface AddQuestionState {
     questionText: string;
     questionType: QuestionType;
+    questionSubmitted: boolean;
 }
 
 class AddQuestion extends React.Component<AddQuestionProps, AddQuestionState> {
@@ -25,11 +27,13 @@ class AddQuestion extends React.Component<AddQuestionProps, AddQuestionState> {
         super(props);
         this.state = {
             questionText: '',
-            questionType: QuestionType.Text
+            questionType: QuestionType.Text,
+            questionSubmitted: false
         };
 
         this.onQuestionSubmit = this.onQuestionSubmit.bind(this);
         this.updateType = this.updateType.bind(this);
+        this.showRedirect = this.showRedirect.bind(this);
     }
 
     onQuestionSubmit(event: React.FormEvent): void {
@@ -38,13 +42,18 @@ class AddQuestion extends React.Component<AddQuestionProps, AddQuestionState> {
             this.props.onAdd({
                 text: this.state.questionText,
                 type: this.state.questionType
-            })
+            });
+            this.setState({ questionSubmitted: true });
         }
     }
 
     updateType(event: React.ChangeEvent<HTMLSelectElement>): void {
         const newType = event.target.value as QuestionTypeKey;
         this.setState({ questionType: QuestionType[newType] });
+    }
+
+    showRedirect() {
+        return this.state.questionSubmitted ? <Redirect to="/" /> : '';
     }
 
     render() {
@@ -77,6 +86,8 @@ class AddQuestion extends React.Component<AddQuestionProps, AddQuestionState> {
                         Add
                     </button>
                 </form>
+
+                { this.showRedirect() }
             </article>
         );
     }
