@@ -23,7 +23,9 @@ function QuestionList(props: QuestionListProps) {
       <h1>
         Questions For Today
       </h1>
-      { questions }
+      <section role="contentinfo" aria-label="Questions for today">
+        { questions }
+      </section>
     </article>
   );
 }

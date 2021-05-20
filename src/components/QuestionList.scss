@@ -1,6 +1,21 @@
 #questions-to-answer-today {
-    display: flex;
-    flex-direction: column;
-    margin: 0.3125rem;
-    gap: 0.625rem;
+    section {
+        display: flex;
+        flex-direction: column;
+        margin: 0.3125rem;
+        gap: 0.625rem;
+
+        @media screen and (min-width: 500px) {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        & > * {
+            flex: 1;
+
+            @media screen and (min-width: 500px) {
+                min-width: 350px;
+            }
+        }
+    }
 }
