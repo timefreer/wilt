@@ -7,7 +7,7 @@ function Settings(props: any) {
             <h1>
                 Settings
             </h1>
-            <details>
+            <details open={true}>
                 <summary>About</summary>
                 An open-source web app to help make everyday learning active.
                 Source code can be found on <a href="https://github.com/timefreer/wilt">GitHub</a>.
