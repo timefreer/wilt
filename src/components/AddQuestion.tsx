@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import QuestionSchema from '../models/Question.schema';
 import './AddQuestion.scss';
 
@@ -41,6 +41,12 @@ function AddQuestion(props: AddQuestionProps) {
                     Add
                 </button>
             </form>
+
+            <Link to="/">
+                <button className="add-question__cancel-btn">
+                    Cancel
+                </button>
+            </Link>
 
             { showRedirect() }
         </article>
