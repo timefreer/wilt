@@ -10,7 +10,7 @@ interface QuestionProps {
 
 function Question(props: QuestionProps) {
     const question = props.question;
-    const [newAnswer, setNewAnswer] = useState('');
+    const [newAnswer, setNewAnswer] = useState(question.answer || '');
 
     const answer = () => question.answer ? <p>{question.answer}</p> : '';
     const image = () => question.imageSrc ? <img src={question.imageSrc} alt='answer' /> : '';
