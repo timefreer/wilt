@@ -34,7 +34,7 @@ function App() {
       <main className="wilt">
         <Switch>
           <Route path="/settings">
-            <Settings onSave={() => console.log('saved')} />
+            <Settings />
           </Route>
 
           <Route path="/add-question">
