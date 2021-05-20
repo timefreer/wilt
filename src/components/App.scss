@@ -1,6 +1,6 @@
 .wilt {
-    height: 100vh;
-    width: 100vw;
+    height: calc(100vh - 2rem);
+    width: calc(100vw - 2rem);
     background: #1A1A1A;
     position: absolute;
     top: 0;
@@ -9,6 +9,7 @@
     bottom: 0;
     color: #f8f8f8;
     overflow: scroll;
+    padding: 1rem;
 
     &__settings {
         position: fixed;
