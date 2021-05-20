@@ -12,9 +12,9 @@ function Question(props: QuestionProps) {
     const question = props.question;
     const [newAnswer, setNewAnswer] = useState(question.answer || '');
 
-    const answer = () => question.answer ? <p>{question.answer}</p> : '';
-    const image = () => question.imageSrc ? <img src={question.imageSrc} alt='answer' /> : '';
-    const answerButton = () => (
+    const answer = question.answer ? <p>{question.answer}</p> : '';
+    const image = question.imageSrc ? <img src={question.imageSrc} alt='answer' /> : '';
+    const answerButton = (
         <div className="question__answer-container">
             <button>Answer</button>
         </div>
@@ -26,16 +26,16 @@ function Question(props: QuestionProps) {
                 <form className="question__answer-container question__answer-container--with-input"
                     onSubmit={() => answerQuestion()}>
                     <input value={newAnswer} onChange={(event) => setNewAnswer(event.target.value)} />
-                    { answerButton() }
+                    { answerButton }
                 </form>
             );
         }
 
         return (
             <div>
-                { answer() }
-                { image() }
-                { (question.answer || question.imageSrc) ? '' : answerButton() }
+                { answer }
+                { image }
+                { (question.answer || question.imageSrc) ? '' : answerButton }
             </div>
         );
     }
