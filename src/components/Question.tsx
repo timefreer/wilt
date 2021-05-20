@@ -35,7 +35,7 @@ function Question(props: QuestionProps) {
             <div>
                 { answer() }
                 { image() }
-                { question.answer ? '' : answerButton() }
+                { (question.answer || question.imageSrc) ? '' : answerButton() }
             </div>
         );
     }
