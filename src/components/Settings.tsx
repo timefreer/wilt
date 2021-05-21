@@ -15,7 +15,7 @@ function Settings(props: any) {
             </details>
 
             <Link to="/">
-                <button className="settings__back-btn">
+                <button className="button button--nav-left">
                     Back to Home
                 </button>
             </Link>

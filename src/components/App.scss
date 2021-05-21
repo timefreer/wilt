@@ -10,16 +10,4 @@
     color: #f8f8f8;
     overflow: scroll;
     padding: 1rem;
-
-    &__settings {
-        position: fixed;
-        bottom: 1.25rem;
-        left: 1.25rem;
-    }
-
-    &__add-question {
-        position: fixed;
-        bottom: 1.25rem;
-        right: 1.25rem;
-    }
 }

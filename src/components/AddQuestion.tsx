@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useRouteMatch } from 'react-router-dom';
 import QuestionSchema from '../models/Question.schema';
 import './AddQuestion.scss';
 
@@ -8,10 +8,12 @@ interface AddQuestionProps {
 }
 
 function AddQuestion(props: AddQuestionProps) {
+    const url = useRouteMatch().url.split('/add')[0];
+
     const [questionText, setQuestionText] = useState('');
     const [questionSubmitted, setQuestionSubmitted] = useState(false);
 
-    const showRedirect = () => questionSubmitted ? <Redirect to="/" /> : '';
+    const showRedirect = () => questionSubmitted ? <Redirect to={url} /> : '';
 
     function onQuestionSubmit(event: React.FormEvent): void {
         event.preventDefault();
@@ -36,14 +38,14 @@ function AddQuestion(props: AddQuestionProps) {
                         onChange={(event) => setQuestionText(event.target.value)} />
                 </label>
 
-                <button className="add-question__add-btn"
+                <button className="button button--nav-right"
                     type="submit">
                     Add
                 </button>
             </form>
 
-            <Link to="/">
-                <button className="add-question__cancel-btn">
+            <Link to={`${url}`}>
+                <button className="button button--nav-left">
                     Cancel
                 </button>
             </Link>

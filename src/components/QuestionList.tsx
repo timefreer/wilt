@@ -11,12 +11,6 @@ interface QuestionListProps {
 function QuestionList(props: QuestionListProps) {
   const questions = props
     .questions
-    .sort((value1, value2) => {
-      const reallyBigNumber = 1_000_000_000;
-      const orderNumber1 = value1.orderNumber ?? reallyBigNumber;
-      const orderNumber2 = value2.orderNumber ?? reallyBigNumber;
-      return orderNumber1 - orderNumber2;
-    })
     .map(question => (
       <Question
         key={question.text}
@@ -27,7 +21,7 @@ function QuestionList(props: QuestionListProps) {
     ));
 
   return (
-    <article id="questions-to-answer-today">
+    <article className="question-list">
       <h1>
         Questions For Today
       </h1>

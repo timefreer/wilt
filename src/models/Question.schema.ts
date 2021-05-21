@@ -4,7 +4,6 @@ interface QuestionSchema {
   isAnswering?: boolean;
   answer?: string;
   imageSrc?: string;
-  orderNumber?: number;
 }
 
 export default QuestionSchema;
