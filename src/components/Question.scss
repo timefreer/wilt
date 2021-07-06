@@ -4,6 +4,13 @@
     padding: 0.625rem;
     color: #3EB595;
     box-shadow: 0 0 5px #FFF4478C;
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+
+    &:hover,
+    &:active {
+        box-shadow: none;
+    }
 
     h1 {
         margin-top: 0;
@@ -12,9 +19,21 @@
     p {
         margin-bottom: 0;
         color: white;
+        white-space: pre;
     }
 
     img {
         max-width: 100%;
+        border-radius: 3px;
+    }
+
+    &__answer-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        &--with-input {
+            justify-content: space-between;
+        }
     }
 }

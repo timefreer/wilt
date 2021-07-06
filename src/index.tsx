@@ -1,17 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import App from './components/App';
-
-window.addEventListener('DOMContentLoaded', () => {
-  const parsedUrl = new URL(window.location.href);
-  const title = parsedUrl.searchParams.get('title');
-  const text = parsedUrl.searchParams.get('text');
-  console.log(`title:\t${title}`);
-  console.log(`text:\t${text}`);
-});
 
 ReactDOM.render(
   <React.StrictMode>

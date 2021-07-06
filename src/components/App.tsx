@@ -1,98 +1,144 @@
 import './App.scss';
 import QuestionList from './QuestionList';
 import QuestionSchema from '../models/Question.schema';
-import { QuestionType } from '../models/Question-type.enum';
 import Settings from './Settings';
-import React from 'react';
-import AddQuestion from './AddQuestion';
+import { useState, useEffect } from 'react';
+import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
+import defaultQuestions from '../data/default-questions';
+import EditQuestions from './EditQuestions';
 
-const QUESTIONS: QuestionSchema[] = [
-  {
-    date: '2021-05-05',
-    type: QuestionType.Text,
-    text: 'What is the funniest thing today?',
-    answer: 'Lorem ipsum udle seedle is foa tuta'
-  }, {
-    date: '2021-05-05',
-    type: QuestionType.Image,
-    text: 'What is the best GIF?',
-    answer: 'https://media.giphy.com/media/13ByqbM0hgfN7y/giphy.gif'
-  }
-];
-
-enum ScreenName {
-  QuestionList = 'Question List',
-  Settings = 'Settings',
-  AddQuestion = 'Add Question'
+interface SharedAnswer {
+  answer: string | undefined;
+  used: boolean;
 }
 
-interface AppState {
-  currentScreen: { [key in ScreenName]: boolean };
-  questions: QuestionSchema[];
-}
+function App() {
+  const [questions, setQuestions] = useState(defaultQuestions);
+  const [sharedAnswer, setSharedAnswer] = useState({
+    answer: undefined,
+    used: false
+  } as SharedAnswer);
 
-class App extends React.Component<{}, AppState> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      currentScreen: {
-        [ScreenName.QuestionList]: true,
-        [ScreenName.Settings]: false,
-        [ScreenName.AddQuestion]: false,
-      },
-      questions: QUESTIONS
-    };
+  useEffect(() => {
+    const parsedUrl = new URL(window.location.href);
+    const answerTitle = removeStartingAndEndingDoubleQuotes(parsedUrl.searchParams.get('title'));
+    const answerText = removeStartingAndEndingDoubleQuotes(parsedUrl.searchParams.get('text'));
+    const answer = `${answerTitle}\n\n${answerText}`;
 
-    this.setCurrentScreen = this.setCurrentScreen.bind(this);
-    this.addQuestion = this.addQuestion.bind(this);
-  }
-
-  setCurrentScreen(newScreen: ScreenName): void {
-    this.setState({
-      currentScreen: {
-        [ScreenName.QuestionList]: newScreen === ScreenName.QuestionList,
-        [ScreenName.Settings]: newScreen === ScreenName.Settings,
-        [ScreenName.AddQuestion]: newScreen === ScreenName.AddQuestion,
-      },
-    });
-  }
-
-  addQuestion(newQuestion: QuestionSchema): void {
-    this.setState((state, props) => ({
-      questions: [...state.questions, newQuestion]
-    }));
-    this.setCurrentScreen(ScreenName.QuestionList)
-  }
-
-  showCurrentScreen() {
-    if (this.state.currentScreen[ScreenName.Settings]) {
-      return <Settings onSave={() => this.setCurrentScreen(ScreenName.QuestionList)} />;
-    } else if (this.state.currentScreen[ScreenName.AddQuestion]) {
-      return <AddQuestion onAdd={this.addQuestion} />;
-    } else {
-      return (
-        <div>
-          <QuestionList questions={this.state.questions} />
-          <button className="wilt__settings"
-            onClick={() => this.setCurrentScreen(ScreenName.Settings)}>
-            {ScreenName.Settings}
-          </button>
-          <button className="wilt__add-question"
-            onClick={() => this.setCurrentScreen(ScreenName.AddQuestion)}>
-            {ScreenName.AddQuestion}
-          </button>
-        </div>
-      );
+    if (answerTitle && answerText && answer !== sharedAnswer.answer) {
+      setSharedAnswer({
+        answer: answer,
+        used: false
+      });
     }
+  }, [sharedAnswer.answer]);
+
+  function removeStartingAndEndingDoubleQuotes(string: string | null): string | undefined {
+    let alteredString;
+
+    if (string) {
+      alteredString = (string as string).substring(1, string.length - 1);
+    } else if (string === null) {
+      alteredString = undefined;
+    }
+
+    return alteredString;
   }
 
-  render() {
-    return (
-      <main className="wilt">
-        { this.showCurrentScreen()}
-      </main>
-    );
+  function addQuestion(newQuestion: QuestionSchema): void {
+    setQuestions([...questions, newQuestion]);
   }
+
+  function moveQuestionUpInList(questionToMove: QuestionSchema): void {
+    const questionToMoveIndex = questions.findIndex(question => question.text === questionToMove.text);
+    const previousQuestionIndex = questionToMoveIndex - 1;
+    const isQuestionToMoveAtTopOfList = questionToMoveIndex === 0;
+
+    if (!isQuestionToMoveAtTopOfList) {
+      questions[previousQuestionIndex] = questions.splice(questionToMoveIndex, 1, questions[previousQuestionIndex])[0];
+    }
+
+    setQuestions([...questions]);
+  }
+
+  function moveQuestionDownInList(questionToMove: QuestionSchema): void {
+    const questionToMoveIndex = questions.findIndex(question => question.text === questionToMove.text);
+    const nextQuestionIndex = questionToMoveIndex + 1;
+    const isQuestionToMoveAtBottomOfList = questionToMoveIndex === questions.length - 1;
+
+    if (!isQuestionToMoveAtBottomOfList) {
+      questions[questionToMoveIndex] = questions.splice(nextQuestionIndex, 1, questions[questionToMoveIndex])[0];
+    }
+
+    setQuestions([...questions]);
+  }
+
+  function deleteQuestion(questionToDelete: QuestionSchema): void {
+    const questionToDeleteIndex = questions.findIndex(question => question.text === questionToDelete.text);
+    questions.splice(questionToDeleteIndex, 1);
+    setQuestions([...questions]);
+  }
+
+  function openAnswerForQuestion(questionToAnswer: QuestionSchema): void {
+    setQuestions(questions.map(question => {
+      question.isAnswering = question.text === questionToAnswer.text;
+
+      if (question.isAnswering && !sharedAnswer.used && sharedAnswer.answer) {
+        question.answer = sharedAnswer.answer;
+        sharedAnswer.used = true;
+      }
+
+      return {...question};
+    }));
+  }
+
+  function answerQuestion(updatedQuestion: QuestionSchema): void {
+    setQuestions(questions.map(question => {
+      question.isAnswering = question.text === updatedQuestion.text ? false : question.isAnswering;
+      question.answer = question.text === updatedQuestion.text ? updatedQuestion.answer : question.answer;
+      return question;
+    }));
+  }
+
+  return (
+    <BrowserRouter>
+      <main className="wilt">
+        <Switch>
+          <Route path="/settings">
+            <Settings />
+          </Route>
+
+          <Route path="/edit-questions">
+            <EditQuestions 
+              questions={questions}
+              onAdd={addQuestion}
+              onMoveQuestionUp={moveQuestionUpInList}
+              onMoveQuestionDown={moveQuestionDownInList}
+              onDelete={deleteQuestion} />
+          </Route>
+
+          <Route exact path="/">
+            <QuestionList
+              questions={questions}
+              onClick={openAnswerForQuestion}
+              onAnswer={answerQuestion} />
+
+            <Link to="/settings">
+              <button className="button button--nav-left">
+                Settings
+              </button>
+            </Link>
+
+            <Link to="/edit-questions">
+              <button className="button button--nav-right">
+                Edit Questions
+              </button>
+            </Link>
+          </Route>
+        </Switch>
+      </main>
+    </BrowserRouter>
+  );
 }
 
 export default App;

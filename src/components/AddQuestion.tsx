@@ -1,5 +1,5 @@
-import React from 'react';
-import { QuestionType, QuestionTypeKey } from '../models/Question-type.enum';
+import React, { useState } from 'react';
+import { Link, Redirect, useRouteMatch } from 'react-router-dom';
 import QuestionSchema from '../models/Question.schema';
 import './AddQuestion.scss';
 
@@ -7,79 +7,52 @@ interface AddQuestionProps {
     onAdd: (newQuestion: QuestionSchema) => void;
 }
 
-interface AddQuestionState {
-    questionText: string;
-    questionType: QuestionType;
-}
+function AddQuestion(props: AddQuestionProps) {
+    const url = useRouteMatch().url.split('/add')[0];
 
-class AddQuestion extends React.Component<AddQuestionProps, AddQuestionState> {
-    readonly questionTypes = (Object.keys(QuestionType) as QuestionTypeKey[])
-        .map((questionTypeKey: QuestionTypeKey) => {
-            return (
-                <option key={questionTypeKey} value={questionTypeKey}>
-                    { QuestionType[questionTypeKey] }
-                </option>);
-        });
+    const [questionText, setQuestionText] = useState('');
+    const [questionSubmitted, setQuestionSubmitted] = useState(false);
 
-    constructor(props: AddQuestionProps) {
-        super(props);
-        this.state = {
-            questionText: '',
-            questionType: QuestionType.Text
-        };
+    const showRedirect = () => questionSubmitted ? <Redirect to={url} /> : '';
 
-        this.onQuestionSubmit = this.onQuestionSubmit.bind(this);
-        this.updateType = this.updateType.bind(this);
-    }
-
-    onQuestionSubmit(event: React.FormEvent): void {
+    function onQuestionSubmit(event: React.FormEvent): void {
         event.preventDefault();
-        if (this.state.questionText && this.state.questionType) {
-            this.props.onAdd({
-                text: this.state.questionText,
-                type: this.state.questionType
-            })
+        if (questionText) {
+            props.onAdd({ text: questionText });
+            setQuestionSubmitted(true);
         }
     }
 
-    updateType(event: React.ChangeEvent<HTMLSelectElement>): void {
-        const newType = event.target.value as QuestionTypeKey;
-        this.setState({ questionType: QuestionType[newType] });
-    }
+    return (
+        <article className="add-question">
+            <h1>
+                Add a question
+            </h1>
 
-    render() {
-        return (
-            <article className="add-question">
-                <h1>
-                    Add a question
-                </h1>
+            <form onSubmit={onQuestionSubmit}>
+                <label>
+                    Question
+                    <input className="add-question__question"
+                        type="text"
+                        value={questionText}
+                        onChange={(event) => setQuestionText(event.target.value)} />
+                </label>
 
-                <form onSubmit={this.onQuestionSubmit}>
-                    <label>
-                        Question
-                        <input className="add-question__question"
-                            type="text"
-                            value={this.state.questionText}
-                            onChange={(event) => this.setState({ questionText: event.target.value })} />
-                    </label>
+                <button className="button button--nav-right"
+                    type="submit">
+                    Add
+                </button>
+            </form>
 
-                    <label>
-                        type
-                        <select className="add-question__type"
-                            value={this.state.questionType}
-                            onChange={this.updateType}>
-                            { this.questionTypes }
-                        </select>
-                    </label>
+            <Link to={`${url}`}>
+                <button className="button button--nav-left">
+                    Cancel
+                </button>
+            </Link>
 
-                    <button className="add-question__add-btn"
-                        type="submit">
-                        Add
-                    </button>
-                </form>
-            </article>
-        );
-    }
+            { showRedirect() }
+        </article>
+    );
 }
 
 export default AddQuestion;

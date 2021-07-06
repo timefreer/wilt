@@ -1,0 +1,31 @@
+.question {
+    &__header-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 0.5rem;
+    }
+
+    &__reorder-container {
+        flex-basis: 2rem;
+        flex-grow: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.25rem;
+        margin-left: auto;
+    }
+
+    &__reorder-btn {
+        flex: 0;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__delete-btn {
+        color: red;
+    }
+}

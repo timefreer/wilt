@@ -1,10 +1,9 @@
-import { QuestionType } from './Question-type.enum';
-
 interface QuestionSchema {
   text: string;
-  type: QuestionType;
-  date?: string; // yyyy-mm-dd
+  isoDate?: string; // yyyy-mm-dd
+  isAnswering?: boolean;
   answer?: string;
+  imageSrc?: string;
 }
 
 export default QuestionSchema;
