@@ -29,7 +29,7 @@ function Question(props: QuestionProps) {
                     onSubmit={() => answerQuestion()}>
                     <textarea value={newAnswer}
                         onChange={(event) => setNewAnswer(event.target.value)}
-                        rows="10" />
+                        rows={10} />
                     { answerButton }
                 </form>
             );
