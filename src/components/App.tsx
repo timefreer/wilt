@@ -23,11 +23,17 @@ function App() {
     const parsedUrl = new URL(window.location.href);
     const answerTitle = removeStartingAndEndingDoubleQuotes(parsedUrl.searchParams.get('title'));
     const answerText = removeStartingAndEndingDoubleQuotes(parsedUrl.searchParams.get('text'));
-    const answer = `${answerTitle}\n\n${answerText}`;
 
-    console.log(`answer:\t${answer}`)
+    let answer;
+    if (answerTitle && answerText) {
+      answer = `${answerTitle}\n\n${answerText}`;
+    } else if (answerTitle) {
+      answer = answerTitle;
+    } else if (answerText) {
+      answer = answerText;
+    }
 
-    if (answerTitle && answerText && answer !== sharedAnswer.answer) {
+    if (answer && answer !== sharedAnswer.answer) {
       setSharedAnswer({
         answer: answer,
         used: false
