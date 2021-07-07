@@ -25,6 +25,8 @@ function App() {
     const answerText = removeStartingAndEndingDoubleQuotes(parsedUrl.searchParams.get('text'));
     const answer = `${answerTitle}\n\n${answerText}`;
 
+    console.log(`answer:\t${answer}`)
+
     if (answerTitle && answerText && answer !== sharedAnswer.answer) {
       setSharedAnswer({
         answer: answer,
