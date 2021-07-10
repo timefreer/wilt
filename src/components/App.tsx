@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import defaultQuestions from '../data/default-questions';
 import EditQuestions from './EditQuestions';
+import { removeStartingAndEndingDoubleQuotes } from '../utils/string-utils';
 
 interface SharedAnswer {
   answer: string | undefined;
@@ -40,18 +41,6 @@ function App() {
       });
     }
   }, [sharedAnswer.answer]);
-
-  function removeStartingAndEndingDoubleQuotes(string: string | null): string | undefined {
-    let alteredString;
-
-    if (string) {
-      alteredString = (string as string).substring(1, string.length - 1);
-    } else if (string === null) {
-      alteredString = undefined;
-    }
-
-    return alteredString;
-  }
 
   function addQuestion(newQuestion: QuestionSchema): void {
     setQuestions([...questions, newQuestion]);
