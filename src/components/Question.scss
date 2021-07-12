@@ -19,6 +19,7 @@
     p {
         margin-bottom: 0;
         color: white;
+        white-space: pre-wrap;
     }
 
     img {
@@ -29,6 +30,7 @@
     &__answer-container {
         display: flex;
         justify-content: flex-end;
+        align-items: center;
 
         &--with-input {
             justify-content: space-between;

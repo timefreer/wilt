@@ -2,13 +2,45 @@ import './App.scss';
 import QuestionList from './QuestionList';
 import QuestionSchema from '../models/Question.schema';
 import Settings from './Settings';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import defaultQuestions from '../data/default-questions';
 import EditQuestions from './EditQuestions';
+import { removeStartingAndEndingDoubleQuotes } from '../utils/string-utils';
+
+interface SharedAnswer {
+  answer: string | undefined;
+  used: boolean;
+}
 
 function App() {
   const [questions, setQuestions] = useState(defaultQuestions);
+  const [sharedAnswer, setSharedAnswer] = useState({
+    answer: undefined,
+    used: false
+  } as SharedAnswer);
+
+  useEffect(() => {
+    const parsedUrl = new URL(window.location.href);
+    const answerTitle = removeStartingAndEndingDoubleQuotes(parsedUrl.searchParams.get('title'));
+    const answerText = removeStartingAndEndingDoubleQuotes(parsedUrl.searchParams.get('text'));
+
+    let answer;
+    if (answerTitle && answerText) {
+      answer = `${answerTitle}\n\n${answerText}`;
+    } else if (answerTitle) {
+      answer = answerTitle;
+    } else if (answerText) {
+      answer = answerText;
+    }
+
+    if (answer && answer !== sharedAnswer.answer) {
+      setSharedAnswer({
+        answer: answer,
+        used: false
+      });
+    }
+  }, [sharedAnswer.answer]);
 
   function addQuestion(newQuestion: QuestionSchema): void {
     setQuestions([...questions, newQuestion]);
@@ -47,7 +79,13 @@ function App() {
   function openAnswerForQuestion(questionToAnswer: QuestionSchema): void {
     setQuestions(questions.map(question => {
       question.isAnswering = question.text === questionToAnswer.text;
-      return question;
+
+      if (question.isAnswering && !sharedAnswer.used && sharedAnswer.answer) {
+        question.answer = sharedAnswer.answer;
+        sharedAnswer.used = true;
+      }
+
+      return {...question};
     }));
   }
 

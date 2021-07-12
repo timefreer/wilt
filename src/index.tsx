@@ -5,13 +5,6 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import App from './components/App';
 
-window.addEventListener('DOMContentLoaded', () => {
-  const parsedUrl = new URL(window.location as unknown as string);
-  console.log('Title shared: ' + parsedUrl.searchParams.get('title'));
-  console.log('Text shared: ' + parsedUrl.searchParams.get('text'));
-  console.log('URL shared: ' + parsedUrl.searchParams.get('url'));
-});
-
 ReactDOM.render(
   <React.StrictMode>
     <App />

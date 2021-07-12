@@ -1,6 +1,7 @@
 {
   "short_name": "WILT",
   "name": "What I Learned Today",
+  "description": "A fun memory app to help you retain what you learn everyday.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -22,6 +23,11 @@
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
+  "orientation": "portrait",
+  "categories": ["memory"],
+  "url": "https://inspiring-gates-85018b.netlify.app/",
+  "manifestUrl": "https://inspiring-gates-85018b.netlify.app/manifest.json",
+  "lang": "en-US",
   "share_target": {
     "action": "/",
     "method": "GET",

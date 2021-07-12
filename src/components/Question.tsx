@@ -1,6 +1,6 @@
 import './Question.scss';
 import QuestionSchema from "../models/Question.schema";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface QuestionProps {
     question: QuestionSchema;
@@ -20,12 +20,16 @@ function Question(props: QuestionProps) {
         </div>
     );
 
+    useEffect(() => setNewAnswer(question.answer || ''), [question]);
+
     const elementsToDisplay = () => {
         if (question.isAnswering) {
             return (
                 <form className="question__answer-container question__answer-container--with-input"
                     onSubmit={() => answerQuestion()}>
-                    <input value={newAnswer} onChange={(event) => setNewAnswer(event.target.value)} />
+                    <textarea value={newAnswer}
+                        onChange={(event) => setNewAnswer(event.target.value)}
+                        rows={10} />
                     { answerButton }
                 </form>
             );
